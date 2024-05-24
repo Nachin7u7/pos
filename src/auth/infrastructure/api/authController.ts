@@ -1,6 +1,8 @@
 import { Request, Response, Router } from 'express';
 import { UserRepository } from '../repositories/UserRepository';
 import { AuthService } from '../../app/services/authService';
+import { verify } from './../../../../node_modules/@types/jsonwebtoken/index.d';
+import { authMiddleware } from '../middlewares/authMiddleware';
 
 export class AuthController {
     public router: Router;
@@ -38,9 +40,17 @@ export class AuthController {
         }
     }
 
+
+    public verifyToken(req: Request, res: Response){
+        return res.status(200).json({
+            message: 'token valido'
+        });
+    }
+
     public routes() {
         this.router.post('/register', this.register.bind(this));
         this.router.post('/login', this.login.bind(this));
+        this.router.get('/verifyToken', authMiddleware, this.verifyToken.bind(this)); //Ruta creada para demostrar el funcionamiento del middleware, que será removida en futuros avances
     }
 }
 
