@@ -26,6 +26,17 @@ export class AuthController {
         }
     }
 
+    public async registerAdmin(req: Request, res: Response): Promise<Response> {
+        const { username, password } = req.body;
+        try {
+            const user = await this.authService.register(username, password, true);
+            return res.status(201).json(user);
+        } catch (error) {
+            if(error instanceof Error)
+            return res.status(400).json({ message: error.message });
+        }
+    }
+
     public async login(req: Request, res: Response): Promise<Response> {
         const { username, password } = req.body;
         try {
@@ -56,6 +67,7 @@ export class AuthController {
 
     public routes() {
         this.router.post('/register', this.register.bind(this));
+        this.router.post('/registerAdmin', this.registerAdmin.bind(this));
         this.router.post('/login', this.login.bind(this));
         this.router.get('/verifyToken', authMiddleware, this.verifyToken.bind(this)); //Ruta creada para demostrar el funcionamiento del middleware, que será removida en futuros avances
         // This route has been created for the only porpouse of verify the correctness for the checkRoles middleware
