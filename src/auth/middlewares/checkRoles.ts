@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { IRole } from '../../domain/entities/IRole';
-import { IUser } from "../../domain/entities/IUser";
+import { IRole } from '../entities/IRole';
+import { IUser } from "../entities/IUser";
 
 
 export const checkRoles = (requiredRoles: IRole[]) => {

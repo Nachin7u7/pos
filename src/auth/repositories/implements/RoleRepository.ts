@@ -1,8 +1,8 @@
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../../../config/dataSource';
-import { Role } from '../../domain/models/Role';
-import { IRole } from '../../domain/entities/IRole';
-import { IRoleRepository } from '../../domain/repositories/IRoleRepository';
+import { Role } from '../../models/Role';
+import { IRole } from '../../entities/IRole';
+import { IRoleRepository } from '../IRoleRepository';
 
 export class RoleRepository implements IRoleRepository {
   private repository: Repository<Role>;

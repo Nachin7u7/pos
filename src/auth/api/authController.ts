@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express';
-import { UserRepository } from '../repositories/UserRepository';
-import { AuthService } from '../../app/services/authService';
-import { verify } from './../../../../node_modules/@types/jsonwebtoken/index.d';
+import { UserRepository } from '../repositories/implements/UserRepository';
+import { AuthService } from '../services/authService';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { checkRoles } from '../middlewares/checkRoles';
 
@@ -16,9 +15,9 @@ export class AuthController {
     }
 
     public async register(req: Request, res: Response): Promise<Response> {
-        const { username, password } = req.body;
+        const { username, password, email } = req.body;
         try {
-            const user = await this.authService.register(username, password);
+            const user = await this.authService.register(username, password, email);
             return res.status(201).json(user);
         } catch (error) {
             if(error instanceof Error)
@@ -27,9 +26,9 @@ export class AuthController {
     }
 
     public async registerAdmin(req: Request, res: Response): Promise<Response> {
-        const { username, password } = req.body;
+        const { username, password, email } = req.body;
         try {
-            const user = await this.authService.register(username, password, true);
+            const user = await this.authService.register(username, password, email, true);
             return res.status(201).json(user);
         } catch (error) {
             if(error instanceof Error)

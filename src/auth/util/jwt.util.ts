@@ -1,13 +1,9 @@
 import jwt from 'jsonwebtoken';
-//TODO:  uncomment after creating config file
-// import { config } from '../config';
+import jwtConfig from '../config/jwt.config';
 
-// const tokenSecret = config.jwt.tokenSecret || 'SUPERDUPERTOKEN';
-// const tokenExpireIn = config.jwt.tokenExpireIn || '1h';
-// const refreshTokenExpireIn = config.jwt.refreshTokenExpireIn || '7d';
-const tokenSecret = 'SUPERDUPERTOKEN';
-const tokenExpireIn = '1h';
-const refreshTokenExpireIn = '7d';
+const tokenSecret = jwtConfig.tokenSecret || 'SUPERDUPERTOKEN';
+const tokenExpireIn = jwtConfig.tokenExpireIn || '1h';
+const refreshTokenExpireIn = jwtConfig.refreshTokenExpireIn || '7d';
 
 /**
  * Generates a JWT for a user.
