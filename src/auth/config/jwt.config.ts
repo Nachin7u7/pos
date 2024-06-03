@@ -6,3 +6,5 @@ const jwtConfig = {
     accessTokenExpireIn: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN || '1h',
     refreshTokenExpireIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN || '30d',
 };
+
+export default jwtConfig;
