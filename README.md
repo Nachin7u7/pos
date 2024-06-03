@@ -1,6 +1,6 @@
 # Pos-core
 
-Pos-core is a Point of Sale System (POS) which aims to offer an intuitive and easy to use solution for modern businesses, by using technologies such as Node.js and Python, providing an interface for (Pos-ui).
+Pos-core is a Point of Sale System (POS) which aims to offer an intuitive and easy to use solution for modern businesses, by using technologies such as Node.js, providing an interface for (Pos-ui).
 
 ## Features
 
