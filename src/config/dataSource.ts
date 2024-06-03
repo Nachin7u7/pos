@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
-import { User } from '../auth/domain/models/User';
-import { Role } from '../auth/domain/models/Role';
+import { User } from '../auth/models/User';
+import { Role } from '../auth/models/Role';
 import config from './config';
 
 const {db} = config;

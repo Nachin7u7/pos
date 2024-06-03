@@ -1,4 +1,4 @@
-import { Role } from "../../auth/domain/models/Role";
+import { Role } from "../../auth/models/Role";
 import { AppDataSource } from '../../config/dataSource';
 
 export async function createUsers() {
