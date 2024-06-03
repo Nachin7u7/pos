@@ -1,94 +1,77 @@
+# Pos-core
 
-# POS CORE
+Pos-core is a Point of Sale System (POS) which aims to offer an intuitive and easy to use solution for modern businesses, by using technologies such as Node.js and Python, providing an interface for (Pos-ui).
 
-## Table of Contents
+## Features
 
-- [POS CORE](#pos-core)
-  - [Table of Contents](#table-of-contents)
-  - [Installation](#installation)
-  - [Usage](#usage)
-  - [Seed Data](#seed-data)
-  - [Project Structure](#project-structure)
-    - [Models](#models)
-    - [Routes](#routes)
-    - [Config](#config)
-    - [Main Application](#main-application)
-    - [Seed Script](#seed-script)
-  - [Scripts](#scripts)
+- *Automatization*: Automates sales processes.
+- *Management*: Inventory management.
+- *Reports*: Report generation.
 
-## Installation
+## Getting Started
 
-To get started, clone the repository and install the dependencies:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-```bash
-git clone https://github.com/team-forces/pos-core.git
-cd pos-core
-npm install
-```
+### Prerequisites
 
-## Usage
+## 1.1 System Requirements
 
-To run the project, use the following command:
+- Processor:
+A dual-core processor with a speed of at least 1GHz is recommended.
 
-```bash
-npm run dev
-```
+- RAM:
+4GB is suggested for acceptable performance, but 8GB is recommended for smoother operation.
 
+- Storage:
+A minimum of 10GB of space is required, although this requirement may increase over time.
 
-## Seed Data
+- OS:
+The project is compatible with Linux, Windows and macOS.
 
-To seed the database with initial data, you can run the seed script:
+- Internet connection:
+A stable connection is recommended to access online services, if necessary.
 
-```bash
-node seed.js
-```
+## 1.2 Required Software Requirements
 
-This script will connect to your MongoDB instance, clear existing data, and insert seed data into the database.
+- Node.js (version 12.x or higher recommended)
+- Git (version 2.0.0 or higher recommended)
 
-## Project Structure
+### Installation
 
-Here's an overview of the project's structure:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/team-forces/pos-core.git
+   ```
+2. Navigate to the project directory:
 
 ```
-my-repo/
-├── models/
-│   └── User.js         # Mongoose model for User
-├── routes/
-│   └── userRoutes.js   # Express routes for User
-├── seed.js             # Seed script to populate the database
-├── config/
-│   └── database.js     # Database configuration
-├── app.js              # Main application file
-├── package.json        # Project metadata and dependencies
-└── README.md           # Project documentation
+  cd pos-core
 ```
 
-### Models
+3. Install NPM packages:
 
-- `User.js`: Defines the schema and model for User data.
+```
+  npm install
+```
 
-### Routes
+5. Start the server:
+   ```
+   npm run dev
+   ```
 
-- `userRoutes.js`: Contains the Express routes for handling user-related API endpoints.
 
-### Config
+### Built With
 
-- `database.js`: Configuration file for MongoDB connection.
+Node.js - The runtime environment
 
-### Main Application
+## Contributors
 
-- `app.js`: The main entry point for the application. Sets up the Express server and middleware.
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 
-### Seed Script
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
-- `seed.js`: Script for seeding the database with initial data.
-
-## Scripts
-
-The following scripts are available in the project:
-
-- `dev`: Starts the Node.js application with dev.
-- `seed`: Runs the seed script to populate the database.
-
-You can run these scripts using `npm run <script-name>`.
+<!-- ALL-CONTRIBUTORS-LIST:END -->
 
