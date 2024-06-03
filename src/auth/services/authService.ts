@@ -1,10 +1,9 @@
-import { IUserRepository } from '../../domain/repositories/IUserRepository';
-import { IUser } from '../../domain/entities/IUser';
+import { IUserRepository } from '../repositories/IUserRepository';
+import { IUser } from '../entities/IUser';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { Roles } from '../../constants/roles';
-import { buildLogger } from '../../../plugin/logger.pluggin';
-import { generateToken } from '../../../util/jwt.util';
+import { Roles } from '../constants/roles';
+import { buildLogger } from '../../plugin/logger.pluggin';
+import { generateToken } from '../util/jwt.util';
 
 export class AuthService {
   private logger;
@@ -13,11 +12,11 @@ export class AuthService {
     this.logger = buildLogger('AuthService');
   }
 
-  async register(username: string, password: string, isAdmin: boolean = false): Promise<IUser|null> {
+  async register(username: string, password: string, email:string ,isAdmin: boolean = false): Promise<IUser> {
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
       const roles = isAdmin ? [Roles.ADMIN] : [Roles.NORMAL];
-      const newUser: IUser = { id: 0, username, password: hashedPassword, roles };
+      const newUser: IUser = { username, password: hashedPassword, email, roles };
       const savedUser = await this.userRepository.save(newUser);
       if (savedUser) {
         this.logger.log('User registered successfully', { userId: savedUser.id, username });
