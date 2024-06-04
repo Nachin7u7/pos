@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { Roles } from '../constants/roles';
 import { buildLogger } from '../../plugin/logger.pluggin';
 import { generateToken } from '../util/jwt.util';
+import { encryptPassword, comparePassword } from '../util/encrypt.util';
 
 export class AuthService {
   private logger;
@@ -14,7 +15,7 @@ export class AuthService {
 
   async register(username: string, password: string, email:string ,isAdmin: boolean = false): Promise<IUser> {
     try {
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await encryptPassword(password);
       const roles = isAdmin ? [Roles.ADMIN] : [Roles.NORMAL];
       const newUser: IUser = { username, password: hashedPassword, email, roles };
       const savedUser = await this.userRepository.save(newUser);
@@ -33,7 +34,7 @@ export class AuthService {
   async login(username: string, password: string): Promise<string | null> {
     try {
       const user = await this.userRepository.findByUsername(username);
-      if (user && await bcrypt.compare(password, user.password)) {
+      if (user && await comparePassword(password, user.password)) {
         const token = generateToken(user);
         this.logger.log('User logged in successfully', { username, userId: user.id });
         return token;
