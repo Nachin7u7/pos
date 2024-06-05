@@ -1,4 +1,6 @@
 import { Request, Response, Router } from 'express';
+import { successHandler } from '../handlers';
+import { HTTP_STATUS } from '../constants/httpStatus';
 import { UserRepository } from '../repositories/implements/UserRepository';
 import { AuthService } from '../services/authService';
 import { authMiddleware } from '../middlewares/authMiddleware';
@@ -18,10 +20,12 @@ export class AuthController {
         const { username, password, email } = req.body;
         try {
             const user = await this.authService.register(username, password, email);
-            return res.status(201).json(user);
+            successHandler.sendCreatedResponse(res, 'User registered successfully', user);
         } catch (error) {
             if(error instanceof Error)
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ 
+                 message: error.message 
+            });
         }
     }
 
@@ -29,7 +33,7 @@ export class AuthController {
         const { username, password, email } = req.body;
         try {
             const user = await this.authService.register(username, password, email, true);
-            return res.status(201).json(user);
+            successHandler.sendCreatedResponse(res, 'A new ADMIN account has been created successfully.', user);
         } catch (error) {
             if(error instanceof Error)
             return res.status(400).json({ message: error.message });
@@ -41,7 +45,7 @@ export class AuthController {
         try {
             const token = await this.authService.login(username, password);
             if (token) {
-                return res.status(200).json({ token });
+                successHandler.sendOkResponse(res, { token }, 'Login successful');
             } else {
                 return res.status(401).json({ message: 'Invalid credentials' });
             }
@@ -53,15 +57,11 @@ export class AuthController {
 
 
     public verifyToken(req: Request, res: Response){
-        return res.status(200).json({
-            message: 'token valido'
-        });
+        successHandler.sendOkResponse(res, null, 'Token is valid');
     }
 
     public verifyRoles(req: Request, res: Response){
-        return res.status(200).json({
-            message: "It has all the roles required"
-        })
+        successHandler.sendOkResponse(res, null, 'It has all the roles required');
     }
 
     public routes() {
@@ -76,3 +76,4 @@ export class AuthController {
 
 const authController = new AuthController(new AuthService(new UserRepository()));
 export default authController.router;
+    
