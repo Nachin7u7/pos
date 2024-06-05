@@ -3,6 +3,8 @@ import { UserRepository } from '../repositories/implements/UserRepository';
 import { AuthService } from '../services/authService';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { checkRoles } from '../middlewares/checkRoles';
+import { loginSchema } from '../middlewares/schemas/loginSchema';
+import { registerSchema } from '../middlewares/schemas/registerSchema';
 
 export class AuthController {
     public router: Router;
@@ -17,6 +19,7 @@ export class AuthController {
     public async register(req: Request, res: Response): Promise<Response> {
         const { username, password, email } = req.body;
         try {
+            await registerSchema.validateAsync(req.body); // Validación con Joi
             const user = await this.authService.register(username, password, email);
             return res.status(201).json(user);
         } catch (error) {
@@ -28,6 +31,7 @@ export class AuthController {
     public async registerAdmin(req: Request, res: Response): Promise<Response> {
         const { username, password, email } = req.body;
         try {
+            await registerSchema.validateAsync(req.body); // Validación con Joi
             const user = await this.authService.register(username, password, email, true);
             return res.status(201).json(user);
         } catch (error) {
@@ -39,6 +43,7 @@ export class AuthController {
     public async login(req: Request, res: Response): Promise<Response> {
         const { username, password } = req.body;
         try {
+            await loginSchema.validateAsync(req.body); // Validación con Joi
             const token = await this.authService.login(username, password);
             if (token) {
                 return res.status(200).json({ token });
