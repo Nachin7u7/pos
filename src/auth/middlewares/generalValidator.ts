@@ -18,7 +18,7 @@ function createValidatorForSchema(schema: Joi.ObjectSchema<any>) {
   };
 }
 
-const validateRegistration = createValidatorForSchema(registerSchema);
-const validateLogin = createValidatorForSchema(loginSchema);
+const validatedRegister = createValidatorForSchema(registerSchema);
+const validatedLogin = createValidatorForSchema(loginSchema);
 
-export { validateRegistration, validateLogin };
+export { validatedRegister, validatedLogin };
