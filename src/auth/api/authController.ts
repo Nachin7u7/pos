@@ -5,6 +5,8 @@ import { UserRepository } from '../repositories/implements/UserRepository';
 import { AuthService } from '../services/authService';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { checkRoles } from '../middlewares/checkRoles';
+import { loginDto } from '../../dtos/loginDto';
+import { registerDto } from '../../dtos/registerDto';
 
 export class AuthController {
     public router: Router;
@@ -17,7 +19,7 @@ export class AuthController {
     }
 
     public async register(req: Request, res: Response): Promise<Response> {
-        const { username, password, email } = req.body;
+        const { username, password, email }: registerDto = req.body;
         try {
             const user = await this.authService.register(username, password, email);
             successHandler.sendCreatedResponse(res, 'User registered successfully', user);
@@ -30,7 +32,7 @@ export class AuthController {
     }
 
     public async registerAdmin(req: Request, res: Response): Promise<Response> {
-        const { username, password, email } = req.body;
+        const { username, password, email }: registerDto = req.body;
         try {
             const user = await this.authService.register(username, password, email, true);
             successHandler.sendCreatedResponse(res, 'A new ADMIN account has been created successfully.', user);
@@ -41,7 +43,7 @@ export class AuthController {
     }
 
     public async login(req: Request, res: Response): Promise<Response> {
-        const { username, password } = req.body;
+        const { username, password }: loginDto = req.body;
         try {
             const token = await this.authService.login(username, password);
             if (token) {
