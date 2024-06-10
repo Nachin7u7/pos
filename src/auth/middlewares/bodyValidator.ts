@@ -1,10 +1,8 @@
 // middlewares.ts
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
-import { loginSchema } from '../middlewares/schemas/loginSchema';
-import { registerSchema } from '../middlewares/schemas/registerSchema';
 
-function createValidatorForSchema(schema: Joi.ObjectSchema<any>) {
+export function validateBodySchema(schema: Joi.ObjectSchema<any>) {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.validateAsync(req.body);
@@ -18,7 +16,3 @@ function createValidatorForSchema(schema: Joi.ObjectSchema<any>) {
   };
 }
 
-const validatedRegister = createValidatorForSchema(registerSchema);
-const validatedLogin = createValidatorForSchema(loginSchema);
-
-export { validatedRegister, validatedLogin };

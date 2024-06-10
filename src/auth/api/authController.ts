@@ -1,10 +1,14 @@
 import { Request, Response, Router } from 'express';
+import { successHandler } from '../handlers';
 import { UserRepository } from '../repositories/implements/UserRepository';
 import { AuthService } from '../services/authService';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { checkRoles } from '../middlewares/checkRoles';
-import { validatedRegister } from '../middlewares/generalValidator';
-import { validatedLogin } from '../middlewares/generalValidator';
+import { loginDto } from '../../dtos/loginDto';
+import { registerDto } from '../../dtos/registerDto';
+import { validateBodySchema } from '../middlewares/bodyValidator';
+import { registerSchema } from '../middlewares/schemas/registerSchema';
+import { loginSchema } from '../middlewares/schemas/loginSchema';
 
 export class AuthController {
     public router: Router;
@@ -17,21 +21,23 @@ export class AuthController {
     }
 
     public async register(req: Request, res: Response): Promise<Response> {
-        const { username, password, email } = req.body;
+        const { username, password, email }: registerDto = req.body;
         try {
             const user = await this.authService.register(username, password, email);
-            return res.status(201).json(user);
+            successHandler.sendCreatedResponse(res, 'User registered successfully', user);
         } catch (error) {
             if(error instanceof Error)
-            return res.status(400).json({ message: error.message });
+            return res.status(400).json({ 
+                 message: error.message 
+            });
         }
     }
 
     public async registerAdmin(req: Request, res: Response): Promise<Response> {
-        const { username, password, email } = req.body;
+        const { username, password, email }: registerDto = req.body;
         try {
             const user = await this.authService.register(username, password, email, true);
-            return res.status(201).json(user);
+            successHandler.sendCreatedResponse(res, 'A new ADMIN account has been created successfully.', user);
         } catch (error) {
             if(error instanceof Error)
             return res.status(400).json({ message: error.message });
@@ -39,11 +45,11 @@ export class AuthController {
     }
 
     public async login(req: Request, res: Response): Promise<Response> {
-        const { username, password } = req.body;
+        const { username, password }: loginDto = req.body;
         try {
             const token = await this.authService.login(username, password);
             if (token) {
-                return res.status(200).json({ token });
+                successHandler.sendOkResponse(res, { token }, 'Login successful');
             } else {
                 return res.status(401).json({ message: 'Invalid credentials' });
             }
@@ -55,25 +61,21 @@ export class AuthController {
 
 
     public verifyToken(req: Request, res: Response){
-        return res.status(200).json({
-            message: 'token valido'
-        });
+        successHandler.sendOkResponse(res, null, 'Token is valid');
     }
 
     public verifyRoles(req: Request, res: Response){
-        return res.status(200).json({
-            message: "It has all the roles required"
-        })
+        successHandler.sendOkResponse(res, null, 'It has all the roles required');
     }
     public routes() {
-        this.router.post('/register', validatedRegister,this.register.bind(this));
-        this.router.post('/registerAdmin', validatedRegister,this.registerAdmin.bind(this));
-        this.router.post('/login', validatedLogin,this.login.bind(this));
-        this.router.get('/verifyToken', authMiddleware, this.verifyToken.bind(this)); //Ruta creada para demostrar el funcionamiento del middleware, que será removida en futuros avances
-        // This route has been created for the only porpouse of verify the correctness for the checkRoles middleware
+        this.router.post('/register', validateBodySchema(registerSchema),this.register.bind(this));
+        this.router.post('/registerAdmin', validateBodySchema(registerSchema),this.registerAdmin.bind(this));
+        this.router.post('/login', validateBodySchema(loginSchema),this.login.bind(this));
+        this.router.get('/verifyToken', authMiddleware, this.verifyToken.bind(this));
         this.router.get('/checkRoles',authMiddleware,checkRoles([{id:1, name: "Cliente"}]),this.verifyRoles.bind(this))
     }
 }
 
 const authController = new AuthController(new AuthService(new UserRepository()));
 export default authController.router;
+    

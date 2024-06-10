@@ -8,6 +8,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('server is running');
+});
+
 app.use('/auth', authRoutes);
 
 AppDataSource.initialize().then(() => {
