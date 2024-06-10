@@ -1,12 +1,14 @@
 import { Request, Response, Router } from 'express';
 import { successHandler } from '../handlers';
-import { HTTP_STATUS } from '../constants/httpStatus';
 import { UserRepository } from '../repositories/implements/UserRepository';
 import { AuthService } from '../services/authService';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { checkRoles } from '../middlewares/checkRoles';
 import { loginDto } from '../../dtos/loginDto';
 import { registerDto } from '../../dtos/registerDto';
+import { validateBodySchema } from '../middlewares/bodyValidator';
+import { registerSchema } from '../middlewares/schemas/registerSchema';
+import { loginSchema } from '../middlewares/schemas/loginSchema';
 
 export class AuthController {
     public router: Router;
@@ -65,13 +67,11 @@ export class AuthController {
     public verifyRoles(req: Request, res: Response){
         successHandler.sendOkResponse(res, null, 'It has all the roles required');
     }
-
     public routes() {
-        this.router.post('/register', this.register.bind(this));
-        this.router.post('/registerAdmin', this.registerAdmin.bind(this));
-        this.router.post('/login', this.login.bind(this));
-        this.router.get('/verifyToken', authMiddleware, this.verifyToken.bind(this)); //Ruta creada para demostrar el funcionamiento del middleware, que será removida en futuros avances
-        // This route has been created for the only porpouse of verify the correctness for the checkRoles middleware
+        this.router.post('/register', validateBodySchema(registerSchema),this.register.bind(this));
+        this.router.post('/registerAdmin', validateBodySchema(registerSchema),this.registerAdmin.bind(this));
+        this.router.post('/login', validateBodySchema(loginSchema),this.login.bind(this));
+        this.router.get('/verifyToken', authMiddleware, this.verifyToken.bind(this));
         this.router.get('/checkRoles',authMiddleware,checkRoles([{id:1, name: "Cliente"}]),this.verifyRoles.bind(this))
     }
 }
